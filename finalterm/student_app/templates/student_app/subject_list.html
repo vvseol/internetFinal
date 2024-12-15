@@ -1,0 +1,31 @@
+<!-- student_app/templates/student_app/subject_list.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과목 목록</title>
+</head>
+<body>
+    <h1>과목 목록</h1>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>과목명</th>
+                <th>교수명</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.professor }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'main_page' %}">홈으로</a>
+</body>
+</html>

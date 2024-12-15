@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject.name }} - 상세 정보</title>
+</head>
+<body>
+
+    <h1>{{ subject.name }} - 상세 정보</h1>
+
+    <p><strong>교수:</strong> {{ subject.professor }}</p>
+    <p><strong>교재:</strong> {{ subject.textbook }}</p>
+    <p><strong>수업 시간:</strong> {{ subject.class_time }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>학생 이름</th>
+                <th>점수</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for score in scores %}
+            <tr>
+                <td>{{ score.student.name }}</td>
+                <td>
+                    <!-- 학생 점수 수정 폼 -->
+                    <form method="POST" action="{% url 'update_score' score.id %}">
+                        {% csrf_token %}
+                        <input type="number" name="score" value="{{ score.score }}" required>
+                        <button type="submit">수정</button>
+                    </form>
+                </td>
+                <td>
+                    <!-- 삭제 버튼 폼 -->
+                    <form method="POST" action="{% url 'delete_student_from_subject' subject.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="student_id" value="{{ score.student.id }}">
+                        <button type="submit" onclick="return confirmDelete()">삭제</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 삭제 확인을 위한 JavaScript -->
+    <script>
+        function confirmDelete() {
+            return confirm("정말로 이 학생을 삭제하시겠습니까?");
+        }
+    </script>
+
+    <a href="{% url 'main_page' %}">홈으로</a>
+
+    <h3>Add Score</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="student">Student:</label>
+        <select name="student">
+            {% for student in students %}
+            <option value="{{ student.id }}">{{ student.name }}</option>
+            {% endfor %}
+        </select><br>
+        <label for="score">Score:</label>
+        <input type="number" name="score" required><br>
+        <button type="submit">Add Score</button>
+    </form>
+</body>
+</html>
+

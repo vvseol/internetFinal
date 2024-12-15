@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ student.name }}의 상세 정보</title>
+</head>
+<body>
+    <h1>{{ student.name }}의 상세 정보</h1>
+    
+    <!-- 학생 정보 -->
+    <table>
+        <tr>
+            <th>학번</th>
+            <td>{{ student.student_id }}</td>
+        </tr>
+        <tr>
+            <th>이름</th>
+            <td>{{ student.name }}</td>
+        </tr>
+        <tr>
+            <th>나이</th>
+            <td>{{ student.age }}</td>
+        </tr>
+        <tr>
+            <th>평균 점수</th>
+            <td>{{ avg_score }}</td>
+        </tr>
+        <tr>
+            <th>학점</th>
+            <td>{{ grade }}</td>
+        </tr>
+    </table>
+
+    <h2>수강 과목 및 점수</h2>
+
+    <table border="1">
+        <tr>
+            <th>과목</th>
+            <th>점수</th>
+            <th>삭제</th>
+        </tr>
+        {% for score in scores %}
+        <tr>
+            <td>{{ score.subject.name }}</td>
+            <td>{{ score.score }}</td>
+            
+            <!-- 점수 삭제 폼 -->
+            <td>
+                <form method="POST" action="{% url 'delete_score' score.id %}">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <a href="{% url 'main_page' %}">홈으로</a>
+</body>
+</html>
